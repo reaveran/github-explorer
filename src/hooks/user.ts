@@ -40,7 +40,7 @@ export const useGetReposByUsername = (username: string, enabled = false) => {
             per_page: PER_PAGE,
           })
         : Promise.resolve([]),
-    queryKey: ["getUserDiscussionQuery", username],
+    queryKey: ["getUserReposQuery", username],
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length === PER_PAGE ? allPages.length + 1 : undefined,
@@ -49,3 +49,14 @@ export const useGetReposByUsername = (username: string, enabled = false) => {
   const data = query.data?.pages?.flatMap((item) => item) ?? [];
   return { ...query, data };
 };
+
+// export const useGetReposByUsername = (username: string, enabled = false) => {
+//   return useQuery({
+//     queryFn: () =>
+//       username !== ""
+//         ? UserApi.getReposByUsername(username, {})
+//         : Promise.resolve(undefined),
+//     queryKey: ["getUserReposQuery", username],
+//     enabled: username !== "" && enabled,
+//   });
+// };

@@ -30,7 +30,7 @@ const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <div className="border border-gray-300 rounded-lg mb-2 overflow-hidden group">
-      <input type="checkbox" id={id} className="hidden" />
+      <input type="checkbox" id={id} className="hidden" data-testId={id} />
       <label
         htmlFor={id}
         onClick={handleToggle}
