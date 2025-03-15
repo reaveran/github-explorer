@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const token = import.meta.env.VITE_API_TOKEN;
 
 const axiosApi = axios.create({
   baseURL: baseUrl,
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
   },
   timeout: 60000,
 });

@@ -10,10 +10,10 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
   return (
     <div className="block p-4 bg-slate-100 rounded-lg">
       <div className="flex flex-col sm:flex-row justify-between mb-2 gap-2 items-start">
-        <Typography variant="h2">{repository.title}</Typography>
+        <Typography variant="h2">{repository.name}</Typography>
         <div className="flex items-center gap-1">
           <Typography variant="small" className="font-semibold text-gray-600">
-            {formatNumber(repository.favorites)}
+            {formatNumber(repository.stargazers_count)}
           </Typography>
           <div className="text-yellow-500">
             <StarIcon />

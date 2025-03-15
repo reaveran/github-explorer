@@ -1,55 +1,65 @@
-import { Accordion } from "@/components";
+import { useMemo, useState } from "react";
 
-import RepositoryCard from "./components/RepositoryCard";
+import { Skeleton, Typography } from "@/components";
+import { queryClient } from "@/modules/QueryProvider";
+
 import SearchForm from "./components/SearchForm";
+import UserAccordion from "./components/UserAccordion";
+
+import { useSearchUsersByUsername } from "@/hooks/user";
 
 const HomeScreen = () => {
-  const onSearch = (searchText: string) => {};
+  const [searchText, setSearchText] = useState<string>("");
+  const { data, isFetching, isFetched, error } =
+    useSearchUsersByUsername(searchText);
+
+  const onSearch = async (query: string) => {
+    if (query === "") {
+      await queryClient.resetQueries({
+        queryKey: ["searchUsersByUsernameQuery"],
+      });
+    }
+    setSearchText(query);
+  };
+
+  const renderSkeleton = useMemo(() => {
+    return (
+      <div className="flex flex-col gap-2">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Skeleton key={index} height={45} />
+        ))}
+      </div>
+    );
+  }, []);
+
+  const renderData = useMemo(() => {
+    if (data?.items.length) {
+      return (
+        <>
+          <Typography variant="small" className="mb-4 text-neutral-600">
+            Showing users for "{searchText}"
+          </Typography>
+          {(data?.items || []).map((user) => (
+            <UserAccordion key={user.id} user={user} />
+          ))}
+        </>
+      );
+    }
+    if (data?.items.length === 0 && isFetched) {
+      return (
+        <Typography variant="small" className="mb-4 text-neutral-600">
+          No username with "{searchText}"
+        </Typography>
+      );
+    }
+  }, [data, isFetched, searchText]);
 
   return (
     <main>
       <SearchForm onSearch={onSearch} />
-      <Accordion id="item-1" title="title 1">
-        <div className="flex flex-col gap-2">
-          <RepositoryCard
-            repository={{
-              id: "123",
-              title: "Github Explorer",
-              description:
-                "A website to search username and their repositories",
-              favorites: 20,
-            }}
-          />
-          <RepositoryCard
-            repository={{
-              id: "123",
-              title: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Dui`,
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.`,
-              favorites: 3001,
-            }}
-          />
-        </div>
-      </Accordion>
-      <Accordion id="item-2" title="title 2">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-      </Accordion>
+      {isFetching && renderSkeleton}
+      {renderData}
+      {error && <Typography>Something went wrong, try again later</Typography>}
     </main>
   );
 };
