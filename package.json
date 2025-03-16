@@ -1,9 +1,9 @@
 {
   "name": "github-explorer",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://reaveran.github.io/github-explorer",
+  "homepage": "https://reaveran.github.io/github-explorer/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

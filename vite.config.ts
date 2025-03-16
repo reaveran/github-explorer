@@ -6,6 +6,7 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/github-explorer/",
   plugins: [
     svgr({
       // svgr options: https://react-svgr.com/docs/options/
@@ -29,5 +30,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src/"),
     },
   },
-  base: "/github-explorer/",
 });
