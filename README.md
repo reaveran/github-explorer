@@ -4,6 +4,9 @@
 
 Github Explorer is github username search application built using **React** and **Vite**. This application allows users to search github user by username and view their repositories. It leverages React for the front-end framework and utilizes React Router for navigation. The project is structured efficiently to maintain scalability and maintainability.
 
+Available in https://reaveran.github.io/github-explorer/
+Note: On https://reaveran.github.io/github-explorer/ it doesn't use any token so there will be request limit 60 request/hour.
+
 ## 🚀 Tech Stack
 
 - **React** - A JavaScript library for building user interfaces.
